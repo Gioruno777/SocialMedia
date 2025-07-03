@@ -13,7 +13,9 @@ import com.example.backend.DTO.LoginRequest;
 import com.example.backend.DTO.RegisterRequest;
 import com.example.backend.Service.AuthService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.GetMapping;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -32,6 +34,12 @@ public class AuthController {
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequest req) {
         String token = authService.login(req.getPhone(), req.getPassword());
         return ResponseEntity.ok(Map.of("token", token));
+    }
+
+    @GetMapping("/validatetoken")
+    public ResponseEntity<?> verifyUser(HttpServletRequest request) {
+        authService.verifyUser(request);
+        return ResponseEntity.ok(Map.of("message", "登入成功"));
     }
 
 }

@@ -12,6 +12,8 @@ import org.springframework.web.server.ResponseStatusException;
 import com.example.backend.repository.AuthRepository;
 import com.example.backend.util.JwtUtil;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 @Service
 public class AuthServiceImpl implements AuthService {
 
@@ -53,6 +55,26 @@ public class AuthServiceImpl implements AuthService {
         }
         String token = jwtUtil.generateToken(user.getUserId());
         return token;
+    }
+
+    @Override
+    public void verifyUser(HttpServletRequest request) {
+
+        String authHeader = request.getHeader("Authorization");
+        String token = null;
+
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            token = authHeader.substring(7);
+        }
+        if (token == null) {
+            throw new RuntimeException("未提供 token");
+        }
+        try {
+            jwtUtil.parseToken(token);
+        } catch (Exception e) {
+            throw new RuntimeException("無效的token");
+        }
+
     }
 
 }

@@ -14,5 +14,7 @@ spring:
       hibernate:
         format_sql: true
 jwt:
-    secret: secret-key-secret-key-secret-key-secret-key
-    expiration: 86400000
+  secret: secret-key-secret-key-secret-key-secret-key
+  expiration: 86400000
+cors:
+  FRONTEND_URL: "http://127.0.0.1:5173"
